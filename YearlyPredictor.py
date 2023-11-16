@@ -5,7 +5,7 @@ import numpy as np
 def year_predictor(file_string):
     months=[]
     # read the file and insert the data into the array
-    with open(".\data_daily.csv") as data_file:
+    with open(file_string) as data_file:
         data_reader = csv.reader(data_file)
         
         # skip the header row
@@ -32,7 +32,7 @@ def year_predictor(file_string):
     def monthly_rate(month):
         # 'A' matrix for linear regression calcuation 
         A = np.vstack([np.array(range(1,len(month)+1)), np.ones_like(month)]).T
-        rate, beginning = np.linalg.lstsq(A, month)[0]
+        rate, beginning = np.linalg.lstsq(A, month, rcond=None)[0]
         end = beginning + rate*len(month)
         # return the rate relative to the beginning estimate of the month (ending estimate of last month)
         return rate/beginning, end
